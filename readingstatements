@@ -1,0 +1,9 @@
+#not finished yet, need to compare with prev and do more analysis with it
+
+import tabula
+import pandas as pd
+
+df = tabula.read_pdf(input('enter filname\n'), pages = 1, area=(200, 0, 300, 800))
+newdf = df.iloc[0:4]
+t = {'': [0]}              
+print(newdf)
