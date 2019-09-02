@@ -1,4 +1,5 @@
-#not finished yet, need to compare with prev and do more analysis with it
+#not finished yet, so far prints the money at the start and end of the month and the overall income and expense 
+#need to compare with prev and do more analysis with it
 
 import tabula
 import pandas as pd
