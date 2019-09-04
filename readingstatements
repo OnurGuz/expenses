@@ -1,10 +1,30 @@
-#not finished yet, so far prints the money at the start and end of the month and the overall income and expense 
-#need to compare with prev and do more analysis with it
+#not finished yet, so far prints the money at the start and end of the month and the overall income and expense for both this month and the prev month 
+#need to do analysis with prev
 
 import tabula
 import pandas as pd
 
-df = tabula.read_pdf(input('enter filname\n'), pages = 1, area=(200, 0, 300, 800))
-newdf = df.iloc[0:4]
-t = {'': [0]}              
-print(newdf)
+filename = input('enter filname\n')
+df = tabula.read_pdf(filename, pages = 1, area=(200, 0, 300, 800))          
+
+print(df)
+opening = df.iat[0,1]
+pay_in = df.iat[1,1]
+pay_out = df.iat[2,1]
+closing = df.iat[3,1]
+
+def prev_month(file):
+    months = {'Jan' : 1,'Feb' : 2, 'Mar' : 3, 'Apr' : 4, 'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9, 'Oct' : 10, 'Nov' : 11, 'Dec' : 12}
+    for key in months:
+        if key in file:
+            a = months[key] - 1
+            b = months[key] - 2
+            prevmonth1 = str(''.join([month for month, number in months.items() if number == a]))
+            prevmonth2 = str(''.join([month for month, number in months.items() if number == b]))
+            new = file.replace(prevmonth1, prevmonth2)
+            new1 = new.replace(key, prevmonth1)
+    return new1
+           
+prev_month(filename)
+prev_df = tabula.read_pdf(prev_month(filename), pages = 1, area=(200, 0, 300, 800))     
+print(prev_df) 
