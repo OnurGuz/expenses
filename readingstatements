@@ -1,4 +1,5 @@
 #analysis only for the expenses
+#filename example: HSBCJun-Jul19.pdf
 
 import tabula
 import pandas as pd
