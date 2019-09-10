@@ -1,30 +1,57 @@
-#not finished yet, so far prints the money at the start and end of the month and the overall income and expense for both this month and the prev month 
-#need to do analysis with prev
+#analysis only for the expenses
 
 import tabula
 import pandas as pd
 
 filename = input('enter filname\n')
 df = tabula.read_pdf(filename, pages = 1, area=(200, 0, 300, 800))          
-
+print('This months statement:')
 print(df)
 opening = df.iat[0,1]
+opening = opening.replace(',', '')
+opening = int(float(opening.replace(" ", "")))
 pay_in = df.iat[1,1]
+pay_in = pay_in.replace(',', '')
+pay_in = int(float(pay_in.replace(" ", "")))
 pay_out = df.iat[2,1]
+pay_out = pay_out.replace(',', '')
+pay_out = int(float(pay_out.replace(" ", "")))
 closing = df.iat[3,1]
+closing = closing.replace(',', '')
+closing = int(float(closing.replace(" ", "")))
 
 def prev_month(file):
-    months = {'Jan' : 1,'Feb' : 2, 'Mar' : 3, 'Apr' : 4, 'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9, 'Oct' : 10, 'Nov' : 11, 'Dec' : 12}
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     for key in months:
         if key in file:
-            a = months[key] - 1
-            b = months[key] - 2
-            prevmonth1 = str(''.join([month for month, number in months.items() if number == a]))
-            prevmonth2 = str(''.join([month for month, number in months.items() if number == b]))
-            new = file.replace(prevmonth1, prevmonth2)
-            new1 = new.replace(key, prevmonth1)
+            a = months.index(key) - 1
+            b = months.index(key) - 2
+            new = file.replace(months[a], months[b])
+            new1 = new.replace(key, months[a])
     return new1
            
 prev_month(filename)
-prev_df = tabula.read_pdf(prev_month(filename), pages = 1, area=(200, 0, 300, 800))     
-print(prev_df) 
+prev_df = tabula.read_pdf(prev_month(filename), pages = 1, area=(200, 0, 300, 800))  
+
+prev_opening = prev_df.iat[0,1]
+prev_opening = prev_opening.replace(',', '')
+prev_opening = int(float(prev_opening.replace(" ", "")))
+prev_pay_in = prev_df.iat[1,1]
+prev_pay_in = prev_pay_in.replace(',', '')
+prev_pay_in = int(float(prev_pay_in.replace(" ", "")))
+prev_pay_out = prev_df.iat[2,1]
+prev_pay_out = prev_pay_out.replace(',', '')
+prev_pay_out = int(float(prev_pay_out.replace(" ", "")))
+prev_closing = prev_df.iat[3,1]
+prev_closing = prev_closing.replace(',', '')
+prev_closing = int(float(prev_closing.replace(" ", "")))
+
+print('Last months statement:')
+print(prev_df)    
+
+if prev_pay_out > pay_out:
+    print('You spent £', str(prev_pay_out - pay_out), 'less this month')
+elif prev_pay_out == pay_out:
+    print('You spent the same amount this month as you did last month!')
+else:
+    print('You spent £', str(pay_out - prev_pay_out), 'more this month')
